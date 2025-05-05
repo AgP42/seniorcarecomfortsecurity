@@ -213,14 +213,23 @@ class seniorcarecomfortsecurity extends eqLogic {
       }
      */
 
-
+	 private function getArrayConfiguration($key) {
+	     $value = $this->getConfiguration($key);
+	     if (is_string($value)) {
+	         $decoded = json_decode($value, true);
+	         if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+	             return $decoded;
+	         }
+	     }
+	     return is_array($value) ? $value : [];
+	 }
 
 
     public function execActions($_config, $_sensor_name = NULL, $_sensor_type = NULL, $_sensor_value = NULL, $_seuilBas = NULL, $_seuilHaut = NULL) { // on donne le type d'action en argument et ca nous execute toute la liste. Les autres arguments sont pour les tag des messages si applicable
 
       log::add('seniorcarecomfortsecurity', 'info', $this->getHumanName() . ' - ################ Execution des actions du type ' . $_config . ' pour ' . $this->getName() .  ' ############');
 
-      foreach ($this->getConfiguration($_config) as $action) { // on boucle pour executer toutes les actions définies
+      foreach ($this->getArrayConfiguration($_config) as $action) { // on boucle pour executer toutes les actions définies
         try {
           $options = array(); // va permettre d'appeler les options de configuration des actions, par exemple un scenario un message
           if (isset($action['options'])) {

@@ -37,3 +37,8 @@
 ---
 
 * Correctif debian 12
+
+0.0.5 - 05 mai 2025
+---
+
+* Correctif debian 12
